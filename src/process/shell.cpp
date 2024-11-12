@@ -1,5 +1,9 @@
-#include "auth.h"
 #include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
+#include "auth/auth.h"
+#include "file_system/file_system.h"
+#include "process_manager.h"
 
 int main() {
     std::string nome, senha;
