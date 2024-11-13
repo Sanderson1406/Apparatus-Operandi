@@ -14,7 +14,8 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -I$(INCLUDE_DIR) -lssl -lcrypto
 
 # Fontes e objetos
-SOURCES = $(SRC_DIR)/shell.cpp \
+SOURCES = $(SRC_DIR)/main.cpp \  # Adicione o main.cpp aqui
+          $(SRC_DIR)/shell.cpp \
           $(AUTH_DIR)/auth.cpp \
           $(PROCESS_DIR)/process_manager.cpp \
           $(FILE_SYSTEM_DIR)/file_system.cpp
@@ -24,13 +25,14 @@ OBJECTS = $(SOURCES:.cpp=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	mkdir -p $(BIN_DIR)  # Cria o diretório bin caso não exista
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
+    mkdir -p $(BIN_DIR)  # Cria o diretório bin caso não exista
+    $(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+    $(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BIN_DIR)/*.o $(TARGET)
+    rm -rf $(BIN_DIR)/*.o $(TARGET)
 
 .PHONY: all clean
+
