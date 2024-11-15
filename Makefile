@@ -2,37 +2,38 @@
 SRC_DIR = src
 BIN_DIR = bin
 INCLUDE_DIR = include
-AUTH_DIR = $(SRC_DIR)/auth
-PROCESS_DIR = $(SRC_DIR)/process
-FILE_SYSTEM_DIR = $(SRC_DIR)/file_system
 
 # Binário
 TARGET = $(BIN_DIR)/Apparatus-operandi
 
 # Compilador e flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I$(INCLUDE_DIR) -lssl -lcrypto
+CXXFLAGS = -std=c++17 -Wall -I$(INCLUDE_DIR) -I"C:/Program Files/OpenSSL-Win64/include"
+LDFLAGS = -L"C:/Program Files/OpenSSL-Win64/lib" -lssl -lcrypto -lstdc++fs
 
 # Fontes e objetos
-SOURCES = $(SRC_DIR)/main.cpp \  # Adicione o main.cpp aqui
-          $(SRC_DIR)/shell.cpp \
-          $(AUTH_DIR)/auth.cpp \
-          $(PROCESS_DIR)/process_manager.cpp \
-          $(FILE_SYSTEM_DIR)/file_system.cpp
+SOURCES = $(SRC_DIR)/main.cpp \
+          $(SRC_DIR)/auth.cpp \
+          $(SRC_DIR)/file_system.cpp \
+          $(SRC_DIR)/process.cpp \
+          $(SRC_DIR)/utils.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Regras
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-    mkdir -p $(BIN_DIR)  # Cria o diretório bin caso não exista
-    $(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
+$(TARGET): $(OBJECTS) | $(BIN_DIR)
+    $(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
-%.o: %.cpp
+# Regras específicas para compilar .cpp em .o com caminhos completos
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
     $(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Garantir que o diretório bin existe
+$(BIN_DIR):
+    mkdir -p $(BIN_DIR)
+
 clean:
-    rm -rf $(BIN_DIR)/*.o $(TARGET)
+    rm -rf $(OBJECTS) $(TARGET)
 
 .PHONY: all clean
-

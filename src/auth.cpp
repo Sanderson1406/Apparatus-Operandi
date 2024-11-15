@@ -1,10 +1,11 @@
 #include "auth.h"
 #include <iostream>
 #include <fstream>
-#include <openssl/sha.h>
 #include <iomanip>
 #include <sstream>
 #include <random>
+#include <openssl/sha.h>
+
 
 // Função para gerar um salt aleatório
 std::string gerar_salt() {
