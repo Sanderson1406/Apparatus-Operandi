@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <sstream>
 #include <iomanip>
+#include <conio.h>
 
 // Função para gerar um hash simples da senha
 std::string hashPassword(const std::string& password) {
@@ -14,13 +15,32 @@ std::string hashPassword(const std::string& password) {
     return ss.str();
 }
 
+// Função para ocultar a senha ao digitá-la
+std::string getPassword() {
+    std::string password;
+    char ch;
+    while ((ch = _getch()) != 13) { 
+        if (ch == 8) { 
+            if (!password.empty()) {
+                std::cout << "\b \b";
+                password.pop_back();
+            }
+        } else {
+            password += ch;
+            std::cout << '*';
+        }
+    }
+    std::cout << std::endl;
+    return password;
+}
+
 // Função para criar um novo usuário
 void createUser(std::unordered_map<std::string, std::string>& users) {
-    std::string username, password;
+    std::string username;
     std::cout << "Digite o nome de usuario: ";
     std::cin >> username;
     std::cout << "Digite a senha: ";
-    std::cin >> password;
+    std::string password = getPassword();
 
     std::string hashedPassword = hashPassword(password);
 
@@ -36,11 +56,11 @@ void createUser(std::unordered_map<std::string, std::string>& users) {
 
 // Função para autenticar um usuário
 bool authenticateUser(const std::unordered_map<std::string, std::string>& users) {
-    std::string username, password;
+    std::string username;
     std::cout << "Digite o nome de usuario: ";
     std::cin >> username;
     std::cout << "Digite a senha: ";
-    std::cin >> password;
+    std::string password = getPassword();
 
     auto it = users.find(username);
     if (it != users.end()) {
@@ -55,6 +75,7 @@ bool authenticateUser(const std::unordered_map<std::string, std::string>& users)
     return false;
 }
 
+// Função principal que gerencia o shell
 int main() {
     std::unordered_map<std::string, std::string> users;
 
@@ -67,10 +88,27 @@ int main() {
     file.close();
 
     if (users.empty()) {
-        std::cout << "Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
+        std::cout << "Nenhum usuario cadastrado. Crie um novo usuario." << std::endl;
         createUser(users);
-    } else {
-        authenticateUser(users);
+    } else if (!authenticateUser(users)) {
+        std::cout << "A autenticacao falhou. Programa sera encerrado." << std::endl;
+        return 1;
+    }
+
+    std::string command;
+    while (true) {
+        std::cout << "> ";
+        std::cin >> command;
+
+        if (command == "sair") {
+            break;
+        } else if (command == "criar") {
+            createUser(users);
+        } else if (command == "login") {
+            authenticateUser(users);
+        } else {
+            std::cout << "Comando nao reconhecido: " << command << std::endl;
+        }
     }
 
     return 0;
