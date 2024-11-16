@@ -20,7 +20,7 @@ Este projeto implementa um sistema simples de autenticação de usuário em C++.
 
 1. **Compilar o Código**:
    ```sh
-   g++ -o AP main.cpp
+   g++ -o AP main.cpp auth.cpp
 
 2. **Rodar Código**:
    ```sh
