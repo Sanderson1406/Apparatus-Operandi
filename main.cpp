@@ -2,8 +2,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
-#include "auth.h"
-#include "dir.h"
+#include "utils.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -53,6 +52,8 @@ int main() {
         } else if (command == "login") {
             authenticateUser(users);
         } else if(command == "listar") {
+            std::string comando = "dir";
+            criarProcesso(comando);
             listarPastas("C:/Users/sande/DevOper/Code - Faculdade/4 Semestre/Sistemas Operacionais/Apparatus-Operandi/directories");
         } else {
             std::cout << "Comando não reconhecido: " << command << std::endl;

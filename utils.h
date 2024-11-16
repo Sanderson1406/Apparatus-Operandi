@@ -1,5 +1,5 @@
-#ifndef AUTH_H
-#define AUTH_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <string>
 #include <unordered_map>
@@ -9,5 +9,7 @@ std::string generateSalt();
 std::string getPassword();
 void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
+void listarPastas(const std::string& dir);
+void criarProcesso(const std::string& comando);
 
 #endif
