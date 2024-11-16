@@ -33,16 +33,16 @@ int main() {
     file.close();
 
     if (users.empty()) {
-        std::cout << "Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
+        std::cout << "Nenhum usuario cadastrado. Crie um novo usuario." << std::endl;
         createUser(users);
     } else if (!authenticateUser(users)) {
-        std::cout << "A autenticação falhou. Programa será encerrado." << std::endl;
+        std::cout << "A autenticacao falhou. Programa sera encerrado." << std::endl;
         return 1;
     }
 
     std::string command;
     while (true) {
-        std::cout << "> ";
+        std::cout << ">>>> ";
         std::cin >> command;
 
         if (command == "sair") {
@@ -54,9 +54,11 @@ int main() {
         } else if(command == "listar") {
             std::string comando = "dir";
             criarProcesso(comando);
-            listarPastas("C:/Users/sande/DevOper/Code - Faculdade/4 Semestre/Sistemas Operacionais/Apparatus-Operandi/directories");
+            listarPastas("C:../Apparatus-Operandi/directories");
+        } else if(command == "limpar") {
+            clearTerminal();
         } else {
-            std::cout << "Comando não reconhecido: " << command << std::endl;
+            std::cout << "Comando nao reconhecido: " << command << std::endl;
         } 
     }
 
