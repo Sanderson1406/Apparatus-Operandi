@@ -46,9 +46,9 @@ std::string getPassword() {
 
 void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
-    std::cout << "Digite o nome de usuario: ";
+    std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
-    std::cout << "Digite a senha: ";
+    std::cout << ">>>> Digite a senha: ";
     std::string password = getPassword();
 
     std::string salt = generateSalt();
@@ -66,9 +66,9 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
 
 bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
-    std::cout << "Digite o nome de usuario: ";
+    std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
-    std::cout << "Digite a senha: ";
+    std::cout << ">>>> Digite a senha: ";
     std::string password = getPassword();
 
     auto it = users.find(username);
@@ -77,10 +77,10 @@ bool authenticateUser(const std::unordered_map<std::string, std::pair<std::strin
         std::string hashedPassword = hashPassword(password, salt);
 
         if (hashedPassword == it->second.second) {
-            std::cout << "Login bem-sucedido!" << std::endl;
+            std::cout << ">>>> Login bem-sucedido!" << std::endl;
             return true;
         }
     }
-    std::cout << "Nome de usuario ou senha incorretos." << std::endl;
+    std::cout << ">>>> Nome de usuario ou senha incorretos." << std::endl;
     return false;
 }
