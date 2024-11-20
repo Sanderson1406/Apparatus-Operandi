@@ -22,7 +22,7 @@
 
 1. **Compilar o Código**:
    ```sh
-   g++ -o AP main.cpp auth.cpp dir.cpp process.cpp utils.cpp
+   g++ -o AP main.cpp auth.cpp dir.cpp process.cpp
 
 2. **Rodar Código**:
    ```sh

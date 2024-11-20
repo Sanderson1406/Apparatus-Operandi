@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <iostream>
 
-void criarProcesso(const std::string& comando) {
+void criarProcesso(const std::string& comando) 
+{
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
 
@@ -17,12 +18,12 @@ void criarProcesso(const std::string& comando) {
         return;
     }
 
-    std::cout << "Processo criado com PID: " << pi.dwProcessId << std::endl;
+    std::cout << ">> Processo criado com PID: " << pi.dwProcessId << std::endl;
 
-    size_t memorySize = 1024 * 1024; // 1 MB
+    size_t memorySize = 1024 * 1024; 
     char* buffer = new char[memorySize];
 
-    std::cout << "Memoria alocada: " << memorySize << " bytes" << std::endl;
+    std::cout << ">> Memoria alocada: " << memorySize << " bytes" << std::endl;
 
     WaitForSingleObject(pi.hProcess, INFINITE);
 

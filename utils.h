@@ -11,6 +11,7 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
 bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 void listarPastas(const std::string& dir);
 void criarArquivoTxt(const std::string& caminho, const std::string& nome);
+void apagarArquivo(const std::string& caminho, const std::string& nome);
 void criarProcesso(const std::string& comando);
 
 #endif
