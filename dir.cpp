@@ -15,7 +15,6 @@ void listarPastas(const std::string& dir) {
 
     do 
     {
-        // Processo de exibição dos arquivos/diretórios
         std::cout << findFileData.cFileName << std::endl;
     } while (FindNextFile(hFind, &findFileData) != 0);
 
@@ -56,5 +55,25 @@ void apagarArquivo(const std::string& caminho, const std::string& nome) {
     } else 
     {
         std::cout << "Arquivo " << nome << " apagado com sucesso!" << std::endl;
+    }
+}
+
+void criarDiretorio(const std::string& caminho, const std::string& nome) {
+    std::string all = caminho + "\\" + nome;
+    if (CreateDirectory(all.c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError()) 
+    {
+        std::cout << "Diretorio " << nome << " criado com sucesso!" << std::endl;
+    } else
+    {
+        std::cerr << "Erro ao criar o diretorio " << caminho << ". Codigo de erro: " << GetLastError() << std::endl;
+    }
+}
+
+void apagarDiretorio(const std::string& caminho, const std::string& nome) {
+    std::string all = caminho + "\\" + nome;
+    if (RemoveDirectory(all.c_str())) {
+        std::cout << "Diretorio " << nome << " apagado com sucesso!" << std::endl;
+    } else {
+        std::cerr << "Erro ao apagar o diretorio " << caminho << ". Codigo de erro: " << GetLastError() << std::endl;
     }
 }

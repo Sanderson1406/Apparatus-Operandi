@@ -80,7 +80,7 @@ int main()
     };
     commandMap["apagar arquivo dir1"] = [caminho1]() 
     {
-        std::string comando = "";
+        std::string comando = "del";
         criarProcesso(comando);
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
@@ -89,26 +89,35 @@ int main()
     };
     commandMap["apagar arquivo"] = [caminho2]() 
     {
-        std::string comando = "";
+        std::string comando = "del";
         criarProcesso(comando);
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
         std::cin >> nometxt;
         if (nometxt == "users")
         {
-            std::cout << "Voce nao tem permissao para deletar esse arquivo";
+            std::cout << "Voce nao tem permissao para deletar esse arquivo" << std::endl;
             return;
         };
         apagarArquivo(caminho2, nometxt);
     };
-    commandMap["criar diretorio dir1"] = [caminho2]() 
+    commandMap["criar diretorio dir1"] = [caminho1]() 
     {
-        std::string comando = "";
+        std::string comando = "mkdir";
         criarProcesso(comando);
         std::string nometxt;
-        std::cout << ">>>> Digite o nome do arquivo: ";
+        std::cout << ">>>> Digite o nome do diretorio: ";
         std::cin >> nometxt;
-        apagarArquivo(caminho2, nometxt);
+        criarDiretorio(caminho1, nometxt);
+    };
+    commandMap["apagar diretorio dir1"] = [caminho1]() 
+    {
+        std::string comando = "mkdir";
+        criarProcesso(comando);
+        std::string nometxt;
+        std::cout << ">>>> Digite o nome do diretorio: ";
+        std::cin >> nometxt;
+        apagarDiretorio(caminho1, nometxt);
     };
     commandMap["limpar"] = []() { clearTerminal(); };
 
