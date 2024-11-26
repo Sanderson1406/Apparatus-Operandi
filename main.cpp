@@ -26,39 +26,40 @@ void clearTerminal() {
 #endif
 }
 
-/* Simula a criação de um processo (simplificado para Linux)
-void criarProcesso(const std::string& comando) {
-    std::cout << ">> Executando comando: " << comando << std::endl;
-    system(comando.c_str());
-}*/
-
 int main() {
+    std::cout << "Bem-vindo(a) ao Apparatus Operandi" << std::endl;
+
+    createDirectories();
     clearTerminal();
 
-    std::unordered_map<std::string, std::pair<std::string, std::string>> users;
-
-    // Ler usuários do arquivo
-    std::ifstream file("users.txt");
-    std::string username, salt, hashedPassword;
-    while (file >> username >> salt >> hashedPassword) {
-        users[username] = {salt, hashedPassword};
-    }
-    file.close();
+    std::unordered_map<std::string, std::pair<std::string, std::string>> users = loadUsersFromFile();
+    std::string username; // Variável para armazenar o nome do usuário
 
     if (users.empty()) {
         std::cout << ">> Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
         createUser(users);
-    } else if (!authenticateUser(users)) {
-        std::cout << ">>>>>> A autenticação falhou. Programa será encerrado." << std::endl;
-        return 1;
+    } else {
+        auto [authenticated, authUsername] = authenticateUser(users);
+        if (!authenticated) {
+            std::cout << ">>>>>>>> A autenticação falhou. Programa será encerrado." << std::endl;
+            return 1;
+        } else {
+            username = authUsername;
+        }
     }
 
     std::unordered_map<std::string, std::function<void()>> commandMap;
-    std::string caminho1 = "./directories";
-    std::string caminho2 = "./";
+    std::string caminho1 = "./directories/" + username;
+    std::string caminho2 = "./directories";
 
     commandMap["criar user"] = [&users]() { createUser(users); };
-    commandMap["login"] = [&users]() { authenticateUser(users); };
+    commandMap["login"] = [&users, &username, &caminho1]() { 
+        auto [authenticated, authUsername] = authenticateUser(users);
+        if (authenticated) {
+            username = authUsername;
+            caminho1 = "./directories/" + username;
+        }
+    };
     commandMap["listar dir1"] = [caminho1]() {
         for (const auto& entry : fs::directory_iterator(caminho1)) {
             std::cout << entry.path().filename().string() << std::endl;

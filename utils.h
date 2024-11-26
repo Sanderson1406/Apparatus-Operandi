@@ -9,9 +9,10 @@ std::string generateSalt();
 std::string getPassword();
 
 void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
-bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
+std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 void saveUsersToFile(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) ;
 std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFromFile();
+void createDirectories();
 
 void listarPastas(const std::string& dir);
 void criarDiretorio(const std::string& caminho, const std::string& nome);

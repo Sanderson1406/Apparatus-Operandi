@@ -10,6 +10,7 @@
 #include "utils.h"
 
 using json = nlohmann::json;
+namespace fs = std::filesystem;
 
 std::string hashPassword(const std::string& password, const std::string& salt) {
     std::string saltedPassword = salt + password;
@@ -82,7 +83,7 @@ std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFr
     return users;
 }
 
-bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
+std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
     std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
@@ -97,11 +98,11 @@ bool authenticateUser(const std::unordered_map<std::string, std::pair<std::strin
 
         if (hashedPassword == it->second.second) {
             std::cout << ">>>> Login bem-sucedido!" << std::endl;
-            return true;
+            return {true, username};
         }
     }
     std::cout << ">>>> Nome de usuario ou senha incorretos." << std::endl;
-    return false;
+    return {false, ""};
 }
 
 void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
@@ -118,4 +119,10 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
 
     users[username] = {salt, hashedPassword};
     saveUsersToFile(users);
+
+    fs::path userDir = "directories/" + username;
+    if (!fs::exists(userDir))
+    {
+        fs::create_directories(userDir);
+    }
 }

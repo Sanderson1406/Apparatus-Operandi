@@ -57,6 +57,12 @@ void criarDiretorio(const std::string& caminho, const std::string& nome) {
     }
 }
 
+void createDirectories() {
+    if (!fs::exists("directories")) {
+        fs::create_directories("directories");
+    }
+}
+
 void apagarDiretorio(const std::string& caminho, const std::string& nome) {
     try {
         std::string fullPath = fs::path(caminho) / nome;
