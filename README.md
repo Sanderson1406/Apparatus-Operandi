@@ -26,10 +26,15 @@
 
 ## Como Compilar e Executar
 
-1. **Compilar o Código**:
+1. **Limpar Resquiscios**:
    ```sh
-   g++ -o AP main.cpp auth.cpp dir.cpp process.cpp
+   rm *.o
 
-2. **Rodar Código**:
+2. **Compilando**:
    ```sh
-   .\AP
+   g++ -std=c++17 -c main.cpp auth.cpp dir.cpp process.cpp
+   g++ -o AP main.o auth.o dir.o process.o -lssl -lcrypto
+
+3. **Rodar Código**:
+   ```sh
+   ./AP
