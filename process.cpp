@@ -6,7 +6,7 @@
 #include "utils.h"
 
 void criarProcesso(const std::string& comando) {
-    pid_t pid = fork(); // Cria um processo filho
+    pid_t pid = fork(); 
 
     if (pid < 0) {
         std::cerr << "Falha ao criar o processo." << std::endl;

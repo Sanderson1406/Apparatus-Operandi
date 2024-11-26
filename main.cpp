@@ -54,10 +54,10 @@ int main() {
     }
 
     std::unordered_map<std::string, std::function<void()>> commandMap;
-    std::string caminho1 = "./Apparatus-Operandi/directories";
-    std::string caminho2 = "./Apparatus-Operandi";
+    std::string caminho1 = "./directories";
+    std::string caminho2 = "./";
 
-    commandMap["criar"] = [&users]() { createUser(users); };
+    commandMap["criar user"] = [&users]() { createUser(users); };
     commandMap["login"] = [&users]() { authenticateUser(users); };
     commandMap["listar dir1"] = [caminho1]() {
         for (const auto& entry : fs::directory_iterator(caminho1)) {

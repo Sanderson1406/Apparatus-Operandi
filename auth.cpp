@@ -41,11 +41,11 @@ std::string getPassword() {
 
     tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
-    newt.c_lflag &= ~(ECHO);
+    newt.c_lflag &= ~(ECHO | ICANON); 
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
-    while (std::cin.get(ch) && ch != '\n') {
-        if (ch == 127 || ch == 8) {
+    while (read(STDIN_FILENO, &ch, 1) && ch != '\n') {
+        if (ch == 127 || ch == 8) { 
             if (!password.empty()) {
                 std::cout << "\b \b";
                 password.pop_back();
@@ -87,6 +87,7 @@ bool authenticateUser(const std::unordered_map<std::string, std::pair<std::strin
     std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
     std::cout << ">>>> Digite a senha: ";
+    std::cout.flush();  
     std::string password = getPassword();
 
     auto it = users.find(username);
@@ -108,12 +109,8 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
     std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
 
-    /*if (!isValidInput(username)) {
-        std::cerr << "Nome de usuário inválido. Não pode conter espaços ou estar vazio." << std::endl;
-        return;
-    }*/
-
     std::cout << ">>>> Digite a senha: ";
+    std::cout.flush();  
     std::string password = getPassword();
 
     std::string salt = generateSalt();

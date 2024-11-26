@@ -9,7 +9,9 @@ namespace fs = std::filesystem;
 void listarPastas(const std::string& dir) {
     try {
         for (const auto& entry : fs::directory_iterator(dir)) {
-            std::cout << entry.path().filename().string() << std::endl;
+            if (fs::is_directory(entry.status())) {
+                std::cout << entry.path().filename().string() << std::endl;
+            }
         }
     } catch (const std::exception& e) {
         std::cerr << "Erro ao listar pastas: " << e.what() << std::endl;
