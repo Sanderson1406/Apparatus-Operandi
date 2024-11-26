@@ -1,16 +1,24 @@
-#include "utils.h"
 #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <iomanip>
-#include <conio.h>
+#include <unordered_map>
+#include <string>
 #include <random>
+#include <openssl/sha.h>
+#include <nlohmann/json.hpp>
+#include <termios.h>
+#include <unistd.h>
+#include "utils.h"
+
+using json = nlohmann::json;
 
 std::string hashPassword(const std::string& password, const std::string& salt) {
-    std::stringstream ss;
     std::string saltedPassword = salt + password;
-    for (char c : saltedPassword) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)c;
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256((unsigned char*)saltedPassword.c_str(), saltedPassword.size(), hash);
+
+    std::stringstream ss;
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
+        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
     }
     return ss.str();
 }
@@ -29,9 +37,16 @@ std::string generateSalt() {
 std::string getPassword() {
     std::string password;
     char ch;
-    while ((ch = _getch()) != 13) {
-        if (ch == 8) { 
-                if (!password.empty()) {
+    struct termios oldt, newt;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+    while (std::cin.get(ch) && ch != '\n') {
+        if (ch == 127 || ch == 8) {
+            if (!password.empty()) {
                 std::cout << "\b \b";
                 password.pop_back();
             }
@@ -40,28 +55,31 @@ std::string getPassword() {
             std::cout << '*';
         }
     }
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     std::cout << std::endl;
     return password;
 }
 
-void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
-    std::string username;
-    std::cout << ">>>> Digite o nome de usuario: ";
-    std::cin >> username;
-    std::cout << ">>>> Digite a senha: ";
-    std::string password = getPassword();
-
-    std::string salt = generateSalt();
-    std::string hashedPassword = hashPassword(password, salt);
-
-    users[username] = {salt, hashedPassword};
-
-    // Salvar usuários em um arquivo
-    std::ofstream file("users.txt");
+void saveUsersToFile(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
+    json j;
     for (const auto& user : users) {
-        file << user.first << " " << user.second.first << " " << user.second.second << std::endl;
+        j[user.first] = {{"salt", user.second.first}, {"hashedPassword", user.second.second}};
     }
-    file.close();
+    std::ofstream file("users.json");
+    file << j.dump(4);
+}
+
+std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFromFile() {
+    std::unordered_map<std::string, std::pair<std::string, std::string>> users;
+    std::ifstream file("users.json");
+    if (file) {
+        json j;
+        file >> j;
+        for (auto& [username, data] : j.items()) {
+            users[username] = {data["salt"], data["hashedPassword"]};
+        }
+    }
+    return users;
 }
 
 bool authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
@@ -83,4 +101,24 @@ bool authenticateUser(const std::unordered_map<std::string, std::pair<std::strin
     }
     std::cout << ">>>> Nome de usuario ou senha incorretos." << std::endl;
     return false;
+}
+
+void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
+    std::string username;
+    std::cout << ">>>> Digite o nome de usuario: ";
+    std::cin >> username;
+
+    /*if (!isValidInput(username)) {
+        std::cerr << "Nome de usuário inválido. Não pode conter espaços ou estar vazio." << std::endl;
+        return;
+    }*/
+
+    std::cout << ">>>> Digite a senha: ";
+    std::string password = getPassword();
+
+    std::string salt = generateSalt();
+    std::string hashedPassword = hashPassword(password, salt);
+
+    users[username] = {salt, hashedPassword};
+    saveUsersToFile(users);
 }

@@ -1,34 +1,37 @@
-#include "utils.h"
-#include <windows.h>
 #include <iostream>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <cstring>
+#include "utils.h"
 
-void criarProcesso(const std::string& comando) 
-{
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
+void criarProcesso(const std::string& comando) {
+    pid_t pid = fork(); // Cria um processo filho
 
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
-
-    if (!CreateProcess(NULL,
-        const_cast<LPSTR>(comando.c_str()),
-        NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
-        std::cerr << "Falha ao criar o processo. Erro: " << GetLastError() << std::endl;
+    if (pid < 0) {
+        std::cerr << "Falha ao criar o processo." << std::endl;
         return;
     }
 
-    std::cout << ">> Processo criado com PID: " << pi.dwProcessId << std::endl;
+    if (pid == 0) {
+        // Código do processo filho
+        char* args[] = {(char*)"/bin/bash", (char*)"-c", (char*)comando.c_str(), nullptr};
+        if (execvp(args[0], args) < 0) {
+            std::cerr << "Falha ao executar o comando." << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        // Código do processo pai
+        std::cout << ">> Processo criado com PID: " << pid << std::endl;
 
-    size_t memorySize = 1024 * 1024; 
-    char* buffer = new char[memorySize];
+        // Aguarda o processo filho terminar
+        int status;
+        waitpid(pid, &status, 0);
 
-    std::cout << ">> Memoria alocada: " << memorySize << " bytes" << std::endl;
-
-    WaitForSingleObject(pi.hProcess, INFINITE);
-
-    delete[] buffer;
-
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
+        if (WIFEXITED(status)) {
+            std::cout << ">> Processo terminou com código: " << WEXITSTATUS(status) << std::endl;
+        } else {
+            std::cerr << ">> Processo não terminou normalmente." << std::endl;
+        }
+    }
 }
