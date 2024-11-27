@@ -18,7 +18,9 @@ void listarPastas(const std::string& dir);
 void criarDiretorio(const std::string& caminho, const std::string& nome);
 void apagarDiretorio(const std::string& caminho, const std::string& nome);
 void criarArquivoTxt(const std::string& caminho, const std::string& nome);
+void criarArquivoTxtDir2(const std::string& caminho, const std::string& nome, const std::string& dir2txt);
 void apagarArquivo(const std::string& caminho, const std::string& nome);
+void apagatArquivoTxtDir2(const std::string& caminho, const std::string& nome, const std::string& dir2txt) ;
 void apagarDiretorioForce(const std::string& caminho, const std::string& nome);
 
 void criarProcesso();

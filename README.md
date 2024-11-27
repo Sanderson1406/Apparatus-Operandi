@@ -58,12 +58,32 @@
    pasta1/
 ```
 
+### Comando: `listar`
+
+- **Descrição**: Lista os arquivos e diretórios presentes no diretório global.
+- **Exemplo**:
+```sh
+   >>>> listar
+   arquivo1_global.txt
+   pasta1_global/
+```
+
 ### Comando: `criar arquivo dir1`
 
 - **Descrição**: Cria um arquivo `.txt` no diretório do usuário.
 - **Exemplo**:
 ```sh
    >>>> criar arquivo dir1
+   >>>> Digite o nome do arquivo: novo_arquivo
+```
+
+### Comando: `criar arquivo dir1/dir2`
+
+- **Descrição**: Cria um arquivo `.txt` no subdiretório do diretório do usuário.
+- **Exemplo**:
+```sh
+   >>>> criar arquivo dir1/dir2
+   >>>> Digite o nome do diretorio: subdiretorio
    >>>> Digite o nome do arquivo: novo_arquivo
 ```
 
@@ -82,6 +102,16 @@
 - **Exemplo**:
 ```sh
    >>>> apagar arquivo dir1
+   >>>> Digite o nome do arquivo: arquivo1.txt
+```
+
+### Comando: `apagar arquivo dir1/dir2`
+
+- **Descrição**: Remove um arquivo no subdiretório do diretório do usuário.
+- **Exemplo**:
+```sh
+   >>>> apagar arquivo dir1/dir2
+   >>>> Digite o nome do diretorio: subdiretorio
    >>>> Digite o nome do arquivo: arquivo1.txt
 ```
 

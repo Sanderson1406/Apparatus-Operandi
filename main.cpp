@@ -100,28 +100,48 @@ int main() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         criarArquivoTxt(caminho1, nometxt);
+    };
+    commandMap["criar arquivo dir1/dir2"] = [&caminho1]() {
+        criarProcesso();
+       std::string nometxt;
+        std::string dir2txt;
+        std::cout << ">>>> Digite o nome do diretorio: ";
+        std::getline(std::cin, dir2txt);
+        std::cout << ">>>> Digite o nome do arquivo: ";
+        std::getline(std::cin, nometxt);
+        criarArquivoTxtDir2(caminho1, nometxt, dir2txt);
+    };
+    commandMap["apagar arquivo dir1/dir2"] = [&caminho1]() {
+        criarProcesso();
+        std::string nometxt;
+        std::string dir2txt;
+        std::cout << ">>>> Digite o nome do diretorio: ";
+        std::getline(std::cin, dir2txt);
+        std::cout << ">>>> Digite o nome do arquivo: ";
+        std::getline(std::cin, nometxt);
+        apagatArquivoTxtDir2(caminho1, nometxt, dir2txt);
     };
     commandMap["criar arquivo"] = [&caminho2]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         criarArquivoTxt(caminho2, nometxt);
     };
     commandMap["apagar arquivo dir1"] = [&caminho1]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         apagarArquivo(caminho1, nometxt);
     };
     commandMap["apagar arquivo"] = [&caminho2]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do arquivo: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         if (nometxt == "users") {
             std::cout << "Voce não tem permissao para deletar esse arquivo" << std::endl;
             return;
@@ -132,42 +152,42 @@ int main() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretório: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         criarDiretorio(caminho1, nometxt);
     };
     commandMap["criar diretorio"] = [&caminho2]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretorio: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         criarDiretorio(caminho2, nometxt);
     };
     commandMap["apagar diretorio dir1"] = [&caminho1]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretorio: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         apagarDiretorio(caminho1, nometxt);
     };
     commandMap["apagar diretorio"] = [&caminho2]() {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretorio: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         apagarDiretorio(caminho2, nometxt);
     };
     commandMap["apagar diretorio dir1 --force"] = [&caminho1] () {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretorio: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         apagarDiretorioForce(caminho1, nometxt);
     };
     commandMap["apagar diretorio --force"] = [&caminho2] () {
         criarProcesso();
         std::string nometxt;
         std::cout << ">>>> Digite o nome do diretorio: ";
-        std::cin >> nometxt;
+        std::getline(std::cin, nometxt);
         apagarDiretorioForce(caminho2, nometxt);
     };
     commandMap["limpar"] = []() { clearTerminal(); };
@@ -177,7 +197,7 @@ int main() {
         std::string command = getComando();
 
         if (command == "sair") {
-            break;
+           return 1;
         } else {
             executarComando(commandMap, command);
         }
