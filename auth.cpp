@@ -105,7 +105,7 @@ std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::stri
     return {false, ""};
 }
 
-void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
+std::string createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
     std::cout << ">>>> Digite o nome de usuario: ";
     std::cin >> username;
@@ -121,10 +121,12 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
     saveUsersToFile(users);
 
     fs::path userDir = "directories/" + username;
-    if (!fs::exists(userDir))
-    {
-        fs::create_directories(userDir);
-    }
+    if (!fs::exists(userDir)) {
+        fs::create_directory(userDir);
+        std::cout << ">>>> Diretório para o usuário '" << username << "' criado.\n";
+    } 
+
+    return username;
 }
 
 void atualizarDiretorioUser(const std::string& username, std::string& caminho1) {

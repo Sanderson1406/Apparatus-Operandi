@@ -7,8 +7,7 @@
 std::string hashPassword(const std::string& password, const std::string& salt);
 std::string generateSalt();
 std::string getPassword();
-
-void createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
+std::string createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 void saveUsersToFile(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) ;
 std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFromFile();

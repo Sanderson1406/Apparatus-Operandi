@@ -26,6 +26,21 @@ void clearTerminal() {
 #endif
 }
 
+std::string getComando() {
+    std::string command;
+    std::cout << ">>>> ";
+    std::getline(std::cin, command);
+    return command;
+}
+
+void executarComando(const std::unordered_map<std::string, std::function<void()>>& commandMap, const std::string& command) {
+    if (commandMap.find(command) != commandMap.end()) { 
+        commandMap.at(command)(); 
+    } else { 
+        std::cout << ">> Comando não reconhecido: " << command << std::endl;
+    }
+}
+
 int main() {
     std::cout << "Bem-vindo(a) ao Apparatus Operandi" << std::endl;
 
@@ -33,12 +48,14 @@ int main() {
     clearTerminal();
 
     std::unordered_map<std::string, std::pair<std::string, std::string>> users = loadUsersFromFile();
-    std::string username; // Variável para armazenar o nome do usuário
+    std::string username;
+    std::string caminho1;
 
     if (users.empty()) {
         std::cout << ">> Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
         criarProcesso();
-        createUser(users);
+        username = createUser(users);
+        atualizarDiretorioUser(username, caminho1);
     } else {
         auto [authenticated, authUsername] = authenticateUser(users);
         if (!authenticated) {
@@ -46,19 +63,21 @@ int main() {
             return 1;
         } else {
             username = authUsername;
-            std::string caminho1;
             atualizarDiretorioUser(username, caminho1);
         }
     }
 
-    std::string caminho1;
-    atualizarDiretorioUser(username, caminho1);
-    std::string caminho2 = "./directories";
-
+    std::string caminho2 = "./directories/";
     std::unordered_map<std::string, std::function<void()>> commandMap;
 
-    commandMap["criar user"] = [&users]() { createUser(users); };
+    commandMap["criar user"] = [&users, &username, &caminho1 ]() { 
+        criarProcesso();
+        createUser(users); 
+        std::cout << ">>>> Faça login para acessar (Comando: login)" << std::endl;
+        atualizarDiretorioUser(username, caminho1);
+    };
     commandMap["login"] = [&users, &username, &caminho1]() { 
+        criarProcesso();
         auto [authenticated, authUsername] = authenticateUser(users);
         if (authenticated) { 
             username = authUsername;
@@ -68,7 +87,13 @@ int main() {
     commandMap["listar dir1"] = [&caminho1]() {
         criarProcesso();
         for (const auto& entry : fs::directory_iterator(caminho1)) {
-            std::cout << entry.path().filename().string() << std::endl;
+            std::cout << ":: " + entry.path().filename().string() << std::endl;
+        }
+    };
+    commandMap["listar"] = [&caminho2]() {
+        criarProcesso();
+        for (const auto& entry : fs::directory_iterator(caminho2)) {
+            std::cout << ":: " + entry.path().filename().string() << std::endl;
         }
     };
     commandMap["criar arquivo dir1"] = [&caminho1]() {
@@ -110,6 +135,13 @@ int main() {
         std::cin >> nometxt;
         criarDiretorio(caminho1, nometxt);
     };
+    commandMap["criar diretorio"] = [&caminho2]() {
+        criarProcesso();
+        std::string nometxt;
+        std::cout << ">>>> Digite o nome do diretório: ";
+        std::cin >> nometxt;
+        criarDiretorio(caminho2, nometxt);
+    };
     commandMap["apagar diretorio dir1"] = [&caminho1]() {
         criarProcesso();
         std::string nometxt;
@@ -128,16 +160,12 @@ int main() {
 
     // Loop principal
     while (true) {
-        std::string command;
-        std::cout << ">>>> ";
-        std::getline(std::cin, command);
+        std::string command = getComando();
 
         if (command == "sair") {
             break;
-        } else if (commandMap.find(command) != commandMap.end()) {
-            commandMap[command]();
         } else {
-            std::cout << ">> Comando não reconhecido: " << command << std::endl;
+            executarComando(commandMap, command);
         }
     }
 
