@@ -64,15 +64,15 @@ void createDirectories() {
 }
 
 void apagarDiretorio(const std::string& caminho, const std::string& nome) {
-    try {
-        std::string fullPath = fs::path(caminho) / nome;
-        if (fs::remove_all(fullPath) > 0) {
-            std::cout << "Diretório " << nome << " apagado com sucesso!" << std::endl;
+    if (fs::exists(caminho) && fs::is_directory(caminho)) {
+        if (fs::is_empty(caminho)) {
+            fs::remove(caminho);
+            std::cout << ">>>> Diretório removido: " << caminho << std::endl;
         } else {
-            std::cerr << "Erro: Diretório não encontrado ou não pôde ser apagado." << std::endl;
+            std::cerr << ">>>> Diretório não está vazio: " << caminho << std::endl;
         }
-    } catch (const std::exception& e) {
-        std::cerr << "Erro ao apagar o diretório: " << e.what() << std::endl;
+    } else {
+        std::cerr << ">>>> Diretório não encontrado: " << caminho << std::endl;
     }
 }
 

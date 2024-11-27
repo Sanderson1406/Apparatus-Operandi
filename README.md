@@ -1,17 +1,17 @@
-\### Atualização do README
+### Atualização do README
 
-\# Apparatus-Operandi
+# Apparatus-Operandi
 
-\## Funcionalidades
+## Funcionalidades
 
-- \*\*Criação de Usuário\*\*: No primeiro acesso, se não houver usuários cadastrados, o sistema solicitará a criação de um novo usuário e senha.
-- \*\*Autenticação de Usuário\*\*: Se houver usuários cadastrados, o sistema solicitará o nome de usuário e a senha para login.
-- \*\*Armazenamento Seguro\*\*: As senhas são armazenadas em formato hash para maior segurança.
-- \*\*Persistência de Dados\*\*: Os dados dos usuários são salvos em um arquivo (`users.txt`) para persistência entre execuções.
-- \*\*Listagem de Pastas\*\*: O sistema pode listar os arquivos e diretórios presentes em um caminho especificado.
-- \*\*Criação de Arquivo `.txt`\*\*: O sistema permite a criação de arquivos `.txt` com um nome variável especificado pelo usuário, em um caminho fixo.
-- \*\*Criação de Diretório\*\*: O sistema permite a criação de novos diretórios em um caminho especificado.
-- \*\*Remoção de Diretório\*\*: O sistema permite a remoção de diretórios vazios em um caminho especificado.
+- **Criação de Usuário**: No primeiro acesso, se não houver usuários cadastrados, o sistema solicitará a criação de um novo usuário e senha.
+- **Autenticação de Usuário**: Se houver usuários cadastrados, o sistema solicitará o nome de usuário e a senha para login.
+- **Armazenamento Seguro**: As senhas são armazenadas em formato hash para maior segurança.
+- **Persistência de Dados**: Os dados dos usuários são salvos em um arquivo (`users.txt`) para persistência entre execuções.
+- **Listagem de Pastas**: O sistema pode listar os arquivos e diretórios presentes em um caminho especificado.
+- **Criação de Arquivo `.txt`**: O sistema permite a criação de arquivos `.txt` com um nome variável especificado pelo usuário, em um caminho fixo.
+- **Criação de Diretório\*\*: O sistema permite a criação de novos diretórios em um caminho especificado.
+- **Remoção de Diretório\*\*: O sistema permite a remoção de diretórios vazios em um caminho especificado.
 - \*\*Remoção de Arquivo\*\*: O sistema permite a remoção de arquivos em um caminho especificado.
 
 \## Estrutura do Código
@@ -26,24 +26,20 @@
 - `apagarArquivo`: Função que remove um arquivo em um caminho especificado.
 - `main`: Função principal que gerencia o fluxo do programa.
 
-\## Comandos Disponíveis
+## Comandos Disponíveis
 
-\### Comando: `criar user`
+### Comando: `criar user`
 
-- \*\*Descrição\*\*: Cria um novo usuário.
+- **Descrição**: Cria um novo usuário.
 - \*\*Exemplo\*\*:
 
-\```sh
+```sh
+   >>>> criar user
+   >>>> Digite o nome de usuario: sanderson
+   >>>> Digite a senha: 
+```
 
-\>>>> criar user
-
-\>>>> Digite o nome de usuario: sanderson
-
-\>>>> Digite a senha: \*\*\*\*\*\*\*\*
-
-\```
-
-\### Comando: `login`
+### Comando: `login`
 
 - \*\*Descrição\*\*: Realiza login com um usuário existente.
 - \*\*Exemplo\*\*:
