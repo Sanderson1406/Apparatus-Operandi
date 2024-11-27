@@ -123,7 +123,7 @@ std::string createUser(std::unordered_map<std::string, std::pair<std::string, st
     fs::path userDir = "directories/" + username;
     if (!fs::exists(userDir)) {
         fs::create_directory(userDir);
-        std::cout << ">>>> Diretório para o usuário '" << username << "' criado.\n";
+        std::cout << ">>>> Diretorio para o usuario '" << username << "' criado.\n";
     } 
 
     return username;

@@ -37,7 +37,7 @@ void executarComando(const std::unordered_map<std::string, std::function<void()>
     if (commandMap.find(command) != commandMap.end()) { 
         commandMap.at(command)(); 
     } else { 
-        std::cout << ">> Comando não reconhecido: " << command << std::endl;
+        std::cout << ">> Comando nao reconhecido: " << command << std::endl;
     }
 }
 
@@ -52,14 +52,14 @@ int main() {
     std::string caminho1;
 
     if (users.empty()) {
-        std::cout << ">> Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
+        std::cout << ">> Nenhum usuario cadastrado. Crie um novo usuario." << std::endl;
         criarProcesso();
         username = createUser(users);
         atualizarDiretorioUser(username, caminho1);
     } else {
         auto [authenticated, authUsername] = authenticateUser(users);
         if (!authenticated) {
-            std::cout << ">>>>>>>> A autenticação falhou. Programa será encerrado." << std::endl;
+            std::cout << ">>>>>>>> A autenticacao falhou. Programa sera encerrado." << std::endl;
             return 1;
         } else {
             username = authUsername;
@@ -123,7 +123,7 @@ int main() {
         std::cout << ">>>> Digite o nome do arquivo: ";
         std::cin >> nometxt;
         if (nometxt == "users") {
-            std::cout << "Você não tem permissão para deletar esse arquivo" << std::endl;
+            std::cout << "Voce não tem permissao para deletar esse arquivo" << std::endl;
             return;
         }
         apagarArquivo(caminho2, nometxt);
@@ -138,23 +138,37 @@ int main() {
     commandMap["criar diretorio"] = [&caminho2]() {
         criarProcesso();
         std::string nometxt;
-        std::cout << ">>>> Digite o nome do diretório: ";
+        std::cout << ">>>> Digite o nome do diretorio: ";
         std::cin >> nometxt;
         criarDiretorio(caminho2, nometxt);
     };
     commandMap["apagar diretorio dir1"] = [&caminho1]() {
         criarProcesso();
         std::string nometxt;
-        std::cout << ">>>> Digite o nome do diretório: ";
+        std::cout << ">>>> Digite o nome do diretorio: ";
         std::cin >> nometxt;
         apagarDiretorio(caminho1, nometxt);
+    };
+    commandMap["apagar diretorio"] = [&caminho2]() {
+        criarProcesso();
+        std::string nometxt;
+        std::cout << ">>>> Digite o nome do diretorio: ";
+        std::cin >> nometxt;
+        apagarDiretorio(caminho2, nometxt);
     };
     commandMap["apagar diretorio dir1 --force"] = [&caminho1] () {
         criarProcesso();
         std::string nometxt;
-        std::cout << ">>>> Digite o nome do diretório: ";
+        std::cout << ">>>> Digite o nome do diretorio: ";
         std::cin >> nometxt;
         apagarDiretorioForce(caminho1, nometxt);
+    };
+    commandMap["apagar diretorio --force"] = [&caminho2] () {
+        criarProcesso();
+        std::string nometxt;
+        std::cout << ">>>> Digite o nome do diretorio: ";
+        std::cin >> nometxt;
+        apagarDiretorioForce(caminho2, nometxt);
     };
     commandMap["limpar"] = []() { clearTerminal(); };
 

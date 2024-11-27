@@ -23,7 +23,7 @@ void criarArquivoTxt(const std::string& caminho, const std::string& nome) {
         std::string fullPath = fs::path(caminho) / (nome + ".txt");
         std::ofstream outFile(fullPath);
         if (!outFile) {
-            throw std::ios_base::failure("Não foi possível criar o arquivo.");
+            throw std::ios_base::failure("Nao foi possivel criar o arquivo.");
         }
         std::cout << "Arquivo criado: " << fullPath << std::endl;
     } catch (const std::exception& e) {
@@ -37,7 +37,7 @@ void apagarArquivo(const std::string& caminho, const std::string& nome) {
         if (fs::remove(fullPath)) {
             std::cout << "Arquivo " << nome << " apagado com sucesso!" << std::endl;
         } else {
-            std::cerr << "Arquivo não encontrado: " << fullPath << std::endl;
+            std::cerr << "Arquivo nao encontrado: " << fullPath << std::endl;
         }
     } catch (const std::exception& e) {
         std::cerr << "Erro ao apagar o arquivo: " << e.what() << std::endl;
@@ -48,12 +48,12 @@ void criarDiretorio(const std::string& caminho, const std::string& nome) {
     try {
         std::string fullPath = fs::path(caminho) / nome;
         if (fs::create_directory(fullPath)) {
-            std::cout << "Diretório " << nome << " criado com sucesso!" << std::endl;
+            std::cout << "Diretorio " << nome << " criado com sucesso!" << std::endl;
         } else {
-            std::cerr << "Erro: Diretório já existe ou não pôde ser criado." << std::endl;
+            std::cerr << "Erro: Diretorio ja existe ou não pode ser criado." << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "Erro ao criar o diretório: " << e.what() << std::endl;
+        std::cerr << "Erro ao criar o diretorio: " << e.what() << std::endl;
     }
 }
 
@@ -67,12 +67,12 @@ void apagarDiretorio(const std::string& caminho, const std::string& nome) {
     if (fs::exists(caminho) && fs::is_directory(caminho)) {
         if (fs::is_empty(caminho)) {
             fs::remove(caminho);
-            std::cout << ">>>> Diretório removido: " << caminho << std::endl;
+            std::cout << ">>>> Diretorio removido: " << caminho << std::endl;
         } else {
-            std::cerr << ">>>> Diretório não está vazio: " << caminho << std::endl;
+            std::cerr << ">>>> Diretorio nao esta vazio: " << caminho << std::endl;
         }
     } else {
-        std::cerr << ">>>> Diretório não encontrado: " << caminho << std::endl;
+        std::cerr << ">>>> Diretorio nao encontrado: " << caminho << std::endl;
     }
 }
 
@@ -80,11 +80,11 @@ void apagarDiretorioForce(const std::string& caminho, const std::string& nome) {
     try {
         std::string fullPath = fs::path(caminho) / nome;
         if (fs::remove_all(fullPath) > 0) {
-            std::cout << "Diretório " << nome << " apagado com sucesso!" << std::endl;
+            std::cout << "Diretorio apagado com sucesso!" + fullPath << std::endl;
         } else {
-            std::cerr << "Erro: Diretório não encontrado ou não pôde ser apagado." << std::endl;
+            std::cerr << "Erro: Diretorio nao encontrado ou nao pode ser apagado." << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "Erro ao apagar o diretório: " << e.what() << std::endl;
+        std::cerr << "Erro ao apagar o diretorio: " << e.what() << std::endl;
     }
 }
