@@ -37,6 +37,7 @@ int main() {
 
     if (users.empty()) {
         std::cout << ">> Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
+        criarProcesso();
         createUser(users);
     } else {
         auto [authenticated, authUsername] = authenticateUser(users);
@@ -45,6 +46,8 @@ int main() {
             return 1;
         } else {
             username = authUsername;
+            std::string caminho1;
+            atualizarDiretorioUser(username, caminho1);
         }
     }
 
