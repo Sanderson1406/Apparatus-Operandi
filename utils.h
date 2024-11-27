@@ -12,6 +12,7 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
 std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users);
 void saveUsersToFile(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) ;
 std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFromFile();
+void atualizarDiretorioUser(const std::string& username, std::string& caminho);
 void createDirectories();
 
 void listarPastas(const std::string& dir);
@@ -19,7 +20,8 @@ void criarDiretorio(const std::string& caminho, const std::string& nome);
 void apagarDiretorio(const std::string& caminho, const std::string& nome);
 void criarArquivoTxt(const std::string& caminho, const std::string& nome);
 void apagarArquivo(const std::string& caminho, const std::string& nome);
+void apagarDiretorioForce(const std::string& caminho, const std::string& nome);
 
-void criarProcesso(const std::string& comando);
+void criarProcesso();
 
 #endif

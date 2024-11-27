@@ -75,3 +75,7 @@ void apagarDiretorio(const std::string& caminho, const std::string& nome) {
         std::cerr << "Erro ao apagar o diretório: " << e.what() << std::endl;
     }
 }
+
+void apagarDiretorioForce(const std::string& caminho, const std::string& nome) {
+    
+}

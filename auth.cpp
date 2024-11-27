@@ -126,3 +126,7 @@ void createUser(std::unordered_map<std::string, std::pair<std::string, std::stri
         fs::create_directories(userDir);
     }
 }
+
+void atualizarDiretorioUser(const std::string& username, std::string& caminho1) {
+    caminho1 = "./directories/" + username;
+}
