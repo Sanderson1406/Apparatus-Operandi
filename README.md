@@ -28,6 +28,14 @@
 
 ## Comandos Disponíveis
 
+### Comando: `ajuda`
+
+- **Descrição**: Lista todos os comandos disponíveis.
+- **Exemplo**:
+```sh
+   >>>> ajuda
+```
+
 ### Comando: `criar user`
 
 - **Descrição**: Cria um novo usuário.
