@@ -18,7 +18,7 @@ void listarPastas(const std::string& caminho) {
             } 
         }
     } catch (const std::exception& e) {
-        std::cerr << "Erro ao listar pastas: " << e.what() << std::endl;
+        std::cerr << "Erro ao listar pasta: " << e.what() << std::endl;
     }
 }
 
@@ -44,17 +44,22 @@ void listarSubdiretorio(const std::string& caminho, const std::vector<std::strin
         for (const auto& part : nomeSubdiretorio) {
             fullPath /= part;
         }
+        if (!fs::exists(fullPath)) {
+            std::cerr << "Erro: O subdiretorio " << fullPath.string() << " nao existe." << std::endl;
+            return;
+        }
         for (const auto& entry : fs::directory_iterator(fullPath)) {
             if (fs::is_directory(entry.status())) {
                 std::cout << "::" << entry.path().filename().string() << std::endl;
             } else if (entry.path().extension() == ".txt") {
                 std::cout << "::" << entry.path().filename().string() << std::endl;
-            }
+            } 
         }
     } catch (const std::exception& e) {
         std::cerr << "Erro ao listar o subdiretorio: " << e.what() << std::endl;
     }
 }
+
 
 void apagarArquivoDir2(const std::string& caminho1, const std::vector<std::string>& args) {
     try {
@@ -144,14 +149,12 @@ void apagarDiretorio(const std::string& caminho, const std::vector<std::string>&
 void apagarDiretorioForce(const std::string& caminho, std::vector<std::string> args) {
     try {
         if (!args.empty() && args.back() == "--force") {
-            args.pop_back(); // Remove o "--force" do vetor de argumentos
+            args.pop_back(); 
         }
-        
         fs::path fullPath = fs::path(caminho);
         for (const auto& part : args) {
             fullPath /= part;
         }
-
         if (fs::remove_all(fullPath) > 0) {
             std::cout << "Diretorio apagado com sucesso: " << fullPath.string() << std::endl;
         } else {

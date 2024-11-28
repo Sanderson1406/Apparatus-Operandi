@@ -51,20 +51,27 @@ void executarComando(const std::unordered_map<std::string, std::function<void(st
         return;
     }
     std::string comando = tokens[0];
-    if (tokens.size() > 1) {
-        comando += " " + tokens[1];
-        tokens.erase(tokens.begin(), tokens.begin() + 2);
-    } else {
-        tokens.erase(tokens.begin());
-    }
+    tokens.erase(tokens.begin());
 
+    // Primeira tentativa: comando de uma palavra
     if (commandMap.find(comando) != commandMap.end()) {
         commandMap.at(comando)(tokens);
-    } else {
-        std::cout << ">> Comando não reconhecido. Digite <ajuda> " << std::endl;
+        return;
     }
-}
 
+    // Combina os tokens restantes de volta em um string para buscar no commandMap
+    for (const std::string& token : tokens) {
+        comando += " " + token;
+        if (commandMap.find(comando) != commandMap.end()) {
+            tokens.erase(tokens.begin());
+            commandMap.at(comando)(tokens);
+            return;
+        }
+    }
+
+    // Se nenhum comando foi encontrado
+    std::cout << ">> Comando não reconhecido. Digite <ajuda>" << std::endl;
+}
 
 int main() {
     std::cout << "Bem-vindo(a) ao Apparatus Operandi" << std::endl;
@@ -110,7 +117,7 @@ int main() {
     };
     commandMap["listar"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
-        if (!args.empty()){
+        if (!args.empty()) {
             listarSubdiretorio(caminho1, args);
         } else {
             listarPastas(caminho1);
