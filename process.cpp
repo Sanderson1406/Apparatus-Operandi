@@ -18,6 +18,7 @@ void criarProcesso() {
         waitpid(pid, &status, 0);
 
         if (WIFEXITED(status)) {
+            std::cout << ">> Finalizando processos!" << std::endl;
             std::cout << ">> Processo filho terminou com codigo: " << WEXITSTATUS(status) << std::endl;
         } else {
             std::cerr << ">> Processo filho nao terminou normalmente." << std::endl;

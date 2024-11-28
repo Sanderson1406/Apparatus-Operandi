@@ -85,9 +85,9 @@ std::unordered_map<std::string, std::pair<std::string, std::string>> loadUsersFr
 
 std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
-    std::cout << ">>>> Digite o nome de usuario: ";
+    std::cout << ">>>> Digite o nome      = ";
     std::cin >> username;
-    std::cout << ">>>> Digite a senha: ";
+    std::cout << ">>>> Digite a senha     = ";
     std::cout.flush();  
     std::string password = getPassword();
 
@@ -107,10 +107,10 @@ std::pair<bool, std::string> authenticateUser(const std::unordered_map<std::stri
 
 std::string createUser(std::unordered_map<std::string, std::pair<std::string, std::string>>& users) {
     std::string username;
-    std::cout << ">>>> Digite o nome de usuario: ";
+    std::cout << ">>>> Digite o nome      = ";
     std::cin >> username;
 
-    std::cout << ">>>> Digite a senha: ";
+    std::cout << ">>>> Digite a senha     = ";
     std::cout.flush();  
     std::string password = getPassword();
 
@@ -123,7 +123,7 @@ std::string createUser(std::unordered_map<std::string, std::pair<std::string, st
     fs::path userDir = "directories/" + username;
     if (!fs::exists(userDir)) {
         fs::create_directory(userDir);
-        std::cout << ">>>> Diretorio para o usuario '" << username << "' criado.\n";
+        std::cout << ">>>> Diretorio para o usuario (" << username << ") criado.\n";
     } 
 
     return username;

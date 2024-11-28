@@ -42,8 +42,8 @@
 - **Exemplo**:
 ```sh
    >>>> criar user
-   >>>> Digite o nome de usuario: sanderson
-   >>>> Digite a senha: 
+   >>>> Digite o nome    = sanderson
+   >>>> Digite a senha   =
 ```
 
 ### Comando: `login`
@@ -52,111 +52,61 @@
 - **Exemplo**:
 ```sh
    >>>> login
-   >>>> Digite o nome de usuario: sanderson
-   >>>> Digite a senha:
-```
-
-### Comando: `listar dir1`
-
-- **Descrição**: Lista os arquivos e diretórios presentes no diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> listar dir1
-   arquivo1.txt
-   pasta1/
+   >>>> Digite o nome    = sanderson
+   >>>> Digite a senha   =
 ```
 
 ### Comando: `listar`
 
-- **Descrição**: Lista os arquivos e diretórios presentes no diretório global.
+- **Descrição**: Lista os arquivos e diretórios presentes no diretório do usuário.
 - **Exemplo**:
 ```sh
    >>>> listar
+   arquivo1.txt
+   pasta1/
+```
+
+- **Descrição**: Lista os arquivos e diretórios presentes no subdiretório.
+- **Exemplo**:
+```sh
+   >>>> listar <nome do diretorio>
    arquivo1_global.txt
    pasta1_global/
 ```
 
-### Comando: `criar arquivo dir1`
-
-- **Descrição**: Cria um arquivo `.txt` no diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> criar arquivo dir1
-   >>>> Digite o nome do arquivo: novo_arquivo
-```
-
-### Comando: `criar arquivo dir1/dir2`
-
-- **Descrição**: Cria um arquivo `.txt` no subdiretório do diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> criar arquivo dir1/dir2
-   >>>> Digite o nome do diretorio: subdiretorio
-   >>>> Digite o nome do arquivo: novo_arquivo
-```
-
 ### Comando: `criar arquivo`
 
-- **Descrição**: Cria um arquivo `.txt` no diretório `directories`.
+- **Descrição**: Cria um arquivo `.txt` no diretório do usuário e no subdiretório.
 - **Exemplo**:
 ```sh
-   >>>> criar arquivo
-   >>>> Digite o nome do arquivo: arquivo_global
-```
-
-### Comando: `apagar arquivo dir1`
-
-- **Descrição**: Remove um arquivo no diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> apagar arquivo dir1
-   >>>> Digite o nome do arquivo: arquivo1.txt
-```
-
-### Comando: `apagar arquivo dir1/dir2`
-
-- **Descrição**: Remove um arquivo no subdiretório do diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> apagar arquivo dir1/dir2
-   >>>> Digite o nome do diretorio: subdiretorio
-   >>>> Digite o nome do arquivo: arquivo1.txt
+   >>>> criar arquivo <nome do arquivo com .txt>
+   >>>> criar arquivo <nome do diretorio> <nome do arquivo com .txt>
 ```
 
 ### Comando: `apagar arquivo`
-
-- **Descrição**: Remove um arquivo no diretório `directories`.
+ Remove um arquivo no diretório `directories`
+- **Descrição**: Remove um arquivo no diretório ou subdiretório especificado..
 - **Exemplo**:
 ```sh
-   >>>> apagar arquivo
-   >>>> Digite o nome do arquivo: arquivo_global.txt
+   >>>> apagar arquivo <nome do arquivo com .txt>
+   >>>> apagar arquivo <nome do diretorio> <nome do arquivo com .txt>
 ```
 
-### Comando: `criar diretorio dir1`
+### Comando: `criar diretorio`
 
 - **Descrição**: Cria um novo diretório no diretório do usuário.
 - **Exemplo**:
 ```sh
-   >>>> criar diretorio dir1
-   >>>> Digite o nome do diretório: nova_pasta
+   >>>> criar diretorio <nome do novo diretorio>
 ```
 
-### Comando: `apagar diretorio dir1`
+### Comando: `apagar diretorio`
 
-- **Descrição**: Remove um diretório no diretório do usuário.
+- **Descrição**: Remove um diretório no diretório especificado.
 - **Exemplo**:
 ```sh
-   >>>> apagar diretorio dir1
-   >>>> Digite o nome do diretório: pasta1
-```
-
-### Comando: `apagar diretorio dir1 --force`
-
-- **Descrição**: Remove um diretório e seu conteúdo no diretório do usuário.
-- **Exemplo**:
-```sh
-   >>>> apagar diretorio dir1 --force
-   >>>> Digite o nome do diretório: pasta1
+   >>>> apagar diretorio <nome do diretorio>
+   >>>> apagar diretorio <nome do diretorio> --force
 ```
 
 ### Comando: `limpar`
@@ -165,6 +115,14 @@
 - **Exemplo**:
 ```sh
    >>>> limpar
+```
+
+### Comando: `sair`
+
+- **Descrição**: Encerra programa.
+- **Exemplo**:
+```sh
+   >>>> sair
 ```
 
 ## Configuração do Ambiente no Fedora

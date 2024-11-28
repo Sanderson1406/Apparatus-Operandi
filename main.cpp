@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <filesystem>
 #include "utils.h"
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -17,7 +20,6 @@
 
 namespace fs = std::filesystem;
 
-// Função para limpar o terminal
 void clearTerminal() {
 #ifdef _WIN32
     system("cls");
@@ -25,10 +27,6 @@ void clearTerminal() {
     system("clear");
 #endif
 }
-
-#include <iostream>
-#include <sstream>
-#include <vector>
 
 std::vector<std::string> splitString(const std::string& str) {
     std::istringstream iss(str);
@@ -50,27 +48,23 @@ std::string getComando() {
 void executarComando(const std::unordered_map<std::string, std::function<void(std::vector<std::string>)>>& commandMap, const std::string& command) {
     std::vector<std::string> tokens = splitString(command);
     if (tokens.empty()) {
-        std::cout << ">> Comando não reconhecido: " << command << std::endl;
         return;
     }
-    std::string comando = tokens[0] + (tokens.size() > 1 ? " " + tokens[1] : "");
+    std::string comando = tokens[0];
     if (tokens.size() > 1) {
+        comando += " " + tokens[1];
         tokens.erase(tokens.begin(), tokens.begin() + 2);
     } else {
         tokens.erase(tokens.begin());
     }
 
-    std::cout << "Comando recebido: " << comando << std::endl;
-    for (const auto& arg : tokens) {
-        std::cout << "Argumento: " << arg << std::endl;
-    }
-
     if (commandMap.find(comando) != commandMap.end()) {
         commandMap.at(comando)(tokens);
     } else {
-        std::cout << ">> Comando não reconhecido: " << comando << std::endl;
+        std::cout << ">> Comando não reconhecido. Digite <ajuda> " << std::endl;
     }
 }
+
 
 int main() {
     std::cout << "Bem-vindo(a) ao Apparatus Operandi" << std::endl;
@@ -83,14 +77,14 @@ int main() {
     std::string caminho1;
 
     if (users.empty()) {
-        std::cout << ">> Nenhum usuário cadastrado. Crie um novo usuário." << std::endl;
+        std::cout << ">> Nenhum usuario cadastrado. Crie um novo usuario." << std::endl;
         criarProcesso();
         username = createUser(users);
         atualizarDiretorioUser(username, caminho1);
     } else {
         auto [authenticated, authUsername] = authenticateUser(users);
         if (!authenticated) {
-            std::cout << ">>>>>>>> A autenticação falhou. Programa será encerrado." << std::endl;
+            std::cout << ">>>>>>>> A autenticacao falhou. Programa sera encerrado." << std::endl;
             return 1;
         } else {
             username = authUsername;
@@ -100,10 +94,10 @@ int main() {
 
     std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> commandMap;
 
-        commandMap["criar user"] = [&users, &username, &caminho1](std::vector<std::string> args) { 
+    commandMap["criar user"] = [&users, &username, &caminho1](std::vector<std::string> args) { 
         criarProcesso();
         createUser(users);
-        std::cout << ":::::::::::: Faça login para acessar (Comando: login)" << std::endl;
+        std::cout << ">>>> Faça login para acessar. Digite <login>" << std::endl;
         atualizarDiretorioUser(username, caminho1);
     };
     commandMap["login"] = [&users, &username, &caminho1](std::vector<std::string> args) { 
@@ -116,9 +110,34 @@ int main() {
     };
     commandMap["listar"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
-        listarPastas(caminho1);
+        if (!args.empty()){
+            listarSubdiretorio(caminho1, args);
+        } else {
+            listarPastas(caminho1);
+        }
     };
-
+    commandMap["criar arquivo"] = [&caminho1](std::vector<std::string> args) {
+        criarProcesso();
+        if (args.size() >= 2) {
+            std::vector<std::string> pathArgs = {args[0]};
+            std::vector<std::string> fileArgs = {args[1]};
+            pathArgs.insert(pathArgs.end(), fileArgs.begin(), fileArgs.end());
+            criarArquivoTxtDir2(caminho1, pathArgs);
+        } else {
+            std::cout << ">>>> Nome do diretório ou arquivo não especificado." << std::endl;
+        }
+    };
+    commandMap["apagar arquivo"] = [&caminho1](std::vector<std::string> args) {
+        criarProcesso();
+        if (args.size() >= 2) {
+            std::vector<std::string> pathArgs = {args[0]};
+            std::vector<std::string> fileArgs = {args[1]};
+            pathArgs.insert(pathArgs.end(), fileArgs.begin(), fileArgs.end());
+            apagarArquivoDir2(caminho1, pathArgs);
+        } else {
+            std::cout << ">>>> Nome do diretório ou arquivo não especificado." << std::endl;
+        }
+    };
     commandMap["criar arquivo"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
         if (!args.empty()) {
@@ -127,7 +146,6 @@ int main() {
             std::cout << ">>>> Nome do arquivo não especificado." << std::endl;
         }
     };
-
     commandMap["apagar arquivo"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
         if (!args.empty()) {
@@ -136,7 +154,6 @@ int main() {
             std::cout << ">>>> Nome do arquivo não especificado." << std::endl;
         }
     };
-
     commandMap["criar diretorio"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
         if (!args.empty()) {
@@ -145,43 +162,44 @@ int main() {
             std::cout << ">>>> Nome do diretório não especificado." << std::endl;
         }
     };
-
     commandMap["apagar diretorio"] = [&caminho1](std::vector<std::string> args) {
         criarProcesso();
         if (!args.empty()) {
-            apagarDiretorio(caminho1, args);
+            if (args.size() > 1 && args.back() == "--force") {
+                args.pop_back();
+                apagarDiretorioForce(caminho1, args);
+            } else {
+                apagarDiretorio(caminho1, args);
+            }
         } else {
             std::cout << ">>>> Nome do diretório não especificado." << std::endl;
         }
     };
-
-    commandMap["apagar diretorio --force"] = [&caminho1](std::vector<std::string> args) {
-        criarProcesso();
-        if (!args.empty()) {
-            apagarDiretorioForce(caminho1, args);
-        } else {
-            std::cout << ">>>> Nome do diretório não especificado." << std::endl;
-        }
-    };
-
     commandMap["limpar"] = [](std::vector<std::string> args) { clearTerminal(); };
+    commandMap["sair"] = [](std::vector<std::string> args) { exit(0);};
+
 
     while (true) {
         std::string command = getComando();
 
-        if (command == "sair") {
-            return 1;
-        } else if (command == "ajuda") {
+        if (command == "sair")
+        {
+            exit(0);
+        }else if (command == "ajuda") {
             std::cout << ":::: criar user" << std::endl;
             std::cout << ":::: login" << std::endl;
-            std::cout << ":::: listar" << std::endl;
-            std::cout << ":::: criar arquivo" << std::endl;
-            std::cout << ":::: apagar arquivo" << std::endl;
-            std::cout << ":::: criar diretorio" << std::endl;
-            std::cout << ":::: apagar diretorio" << std::endl;
-            std::cout << ":::: apagar diretorio --force" << std::endl;
+            std::cout << ":::: listar " << std::endl;
+            std::cout << ":::: listar <nome do diretorio>" << std::endl;
+            std::cout << ":::: criar arquivo <Nome do arquivo com .txt>" << std::endl;
+            std::cout << ":::: criar arquivo <Nome do diretorio> <Nome do arquivo com .txt>" << std::endl;
+            std::cout << ":::: apagar arquivo <Nome do arquivo com .txt>" << std::endl;
+            std::cout << ":::: apagar arquivo <Nome do diretorio> <Nome do arquivo com .txt>" << std::endl;
+            std::cout << ":::: criar diretorio <Nome do novo diretorio>" << std::endl;
+            std::cout << ":::: apagar diretorio <Nome do diretorio>" << std::endl;
+            std::cout << ":::: apagar diretorio <Nome do diretorio> --force" << std::endl;
             std::cout << ":::: limpar" << std::endl;
-        } else {
+            std::cout << ":::: sair" << std::endl;
+        }  else {
             executarComando(commandMap, command);
         }
     }
