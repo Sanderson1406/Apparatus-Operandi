@@ -1,5 +1,3 @@
-### Atualização do README
-
 # Apparatus-Operandi
 
 ## Funcionalidades
